@@ -10,17 +10,38 @@ Terdapat node `publisher` dan `subscriber`
 Summary: arm control, forward kinematics, 
 ## SOAL 1
 
-**1. Kegunaan ros2_control tag pada file URDF.**
+### 1. Kegunaan `<ros2_control>` tag pada file URDF
 
-Jawab: 
+Tag `<ros2_control>` dipakai untuk mendeskripsikan interface hardware robot ke framework ros2_control (langsung di dalam URDF). Isinya:
 
-**2. Tipe plugin controller apa yang digunakan pada robot kalian.**
+- **`<hardware>`**: menentukan plugin hardware interface yang dipakai.
+- **`<joint>`**: membuat daftar joint yang dikontrol, beserta:
+  - `command_interface` (misal: `position`, `velocity`, `effort`)
+  - `state_interface` (misal: `position`, `velocity`)
 
-jawab: 
+Tanpa tag ini, `controller_manager` tidak tahu hardware apa yang harus dikelola dan interface apa yang bisa diklaim oleh controller.
 
-**3. Apa saja node yang dijalankan di bringup.launch.py**
+---
 
-Jawab:
+### 2. Tipe plugin controller pada robot
+
+Berdasarkan `arm_controllers.yaml`, ada dua controller:
+
+| Nama | Tipe plugin | Fungsi |
+|------|-------------|--------|
+| `joint_state_broadcaster` | `joint_state_broadcaster/JointStateBroadcaster` | Membaca posisi joint saat ini dan mempublikasikannya ke topic `/joint_states` |
+| `arm_controller` | `position_controllers/JointGroupPositionController` | Mengirim target sudut (posisi) ke joint `joint_1`, `joint_2`, `joint_3` |
+
+### 3. Node yang dijalankan di `bringup.launch.py`
+
+Ada empat node:
+
+| No | Node | Package | Fungsi |
+|----|------|---------|--------|
+| 1 | `robot_state_publisher` | `robot_state_publisher` | Membaca `robot_description` (hasil `xacro` dari `arm.urdf`), lalu mempublikasikan transform TF robot |
+| 2 | `ros2_control_node` | `controller_manager` | Menjalankan controller manager yang memuat hardware interface dan mengelola controller sesuai `arm_controllers.yaml` |
+| 3 | `controller_spawner` | `controller_manager` (executable `spawner`) | Memuat dan mengaktifkan `joint_state_broadcaster` dan `arm_controller` dengan parameter dari `arm_controllers.yaml` |
+| 4 | `rviz2` | `rviz2` | Visualisasi robot memakai konfigurasi `arm.rviz` |
 
 ## SOAL 2: FORWARD KINEMATICS
 
