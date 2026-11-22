@@ -26,7 +26,7 @@
 
     <link name="tibia">
         <visual>
-            <origin xyz="0 0 0.15"/>
+            <origin xyz="0.15 0 0" rpy="0 1.57 0"/>
             <geometry>
                 <cylinder radius="0.03" length="0.4"/>
             </geometry>
@@ -38,7 +38,7 @@
 
     <link name="gripper">
         <visual>
-            <origin xyz="0 0 0.1"/>
+            <origin xyz="0.1 0 0" rpy="0 1.57 0"/>
             <geometry>
                 <cylinder radius="0.02" length="0.1"/>
             </geometry>
@@ -48,24 +48,11 @@
         </visual>
     </link>
 
-    <link name="gripper_hand1">
+    <link name="gripper_hand">
         <visual>
-            <origin xyz="0 -0.04 0"/>
+            <origin xyz="0 0 0" rpy="0 1.57 0"/>
             <geometry>
-                <box size="0.03 0.03 0.1"/>            
-            </geometry>
-            <material name='grey'>
-                <color rgba="0.5 0.5 0.5 1.0"/>
-            </material>
-        </visual>
-    </link>
-
-
-    <link name="gripper_hand2">
-        <visual>
-            <origin xyz="0 0.04 0"/>
-            <geometry>
-                <box size="0.03 0.03 0.1"/>            
+                <box size="0.1 0.1 0.03"/>            
             </geometry>
             <material name='grey'>
                 <color rgba="0.5 0.5 0.5 1.0"/>
@@ -86,29 +73,22 @@
         <parent link="femur"/>
         <child link="tibia"/>
         <origin xyz="0 0 0.4"/>
-        <axis xyz="0 1 0"/>
-        <limit effort="10" velocity="1.0" lower="-1" upper="1" />    
+        <axis xyz="0 -1 0"/>
+        <limit effort="10" velocity="1.0" lower="-1.57" upper="1.57" />    
     </joint>
 
     <joint name="joint_3" type="revolute">
         <parent link="tibia"/>
         <child link="gripper"/>
-        <origin xyz="0 0 0.3"/>
-        <axis xyz="0 1 0"/>
-        <limit effort="10" velocity="1.0" lower="-1" upper="1" />    
+        <origin xyz="0.3 0 0"/>
+        <axis xyz="0 -1 0"/>
+        <limit effort="10" velocity="1.0" lower="-1.57" upper="1.57"/>
     </joint>
 
     <joint name="joint_4" type="fixed">
         <parent link="gripper"/>
-        <child link="gripper_hand1"/>
-        <origin xyz="0 0 0.2" rpy="0.9 0 0"/>
-        <axis xyz="0 1 0"/>
-    </joint>
-
-    <joint name="joint_5" type="fixed">
-        <parent link="gripper"/>
-        <child link="gripper_hand2"/>
-        <origin xyz="0 0 0.2" rpy="-0.9 0 0"/>
+        <child link="gripper_hand"/>
+        <origin xyz="0.15 0 0" rpy="0 0 0"/>
         <axis xyz="0 1 0"/>
     </joint>
 

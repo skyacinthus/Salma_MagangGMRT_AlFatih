@@ -2,7 +2,7 @@ import rclpy
 from rclpy.node import Node 
 from std_msgs.msg import Float64MultiArray
 
-ARM_POSITION = [0.3, 0.5, 0.0]
+ARM_POSITION = [0.0, 0.0, 0.0]
 
 PUBLISH_PERIOD = 0.1 
 
