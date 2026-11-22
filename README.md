@@ -1,6 +1,6 @@
 # MAGANG AL-FATIH 
 # PERTEMUAN 3 
-Summary: publisher, subscriber, 
+Summary: 
 ## KONVERSI QUATERNION KE ROLL, PITCH, DAN YAW (RPY)
 
 Package `py_pubsub` berisi dua node:
@@ -28,6 +28,21 @@ Jalankan kedua node dari workspace ROS2 pada dua terminal yang berbeda:
 ros2 run py_pubsub publisher
 ros2 run py_pubsub subscriber
 ```
+node `subcriber` mengubah nilai quaternion yang dikirim `publisher` menggunakan library numpy dan math dengan implementasi sebagai berikut: 
+
+```py
+ def listener_callback(self, msg):
+        w = msg.w 
+        x = msg.x
+        y = msg.y
+        z = msg.z
+        norm = math.sqrt(w*w + x*x + y*y + z*z)
+        w, x, y, z = w/norm, x/norm, y/norm, z/norm
+        roll =  np.degrees(math.atan2(2*((w*x)+(y*z)), 1 - 2*((x*x) + (y*y))))
+        pitch = np.degrees(math.asin(2*((w*y) - (z*x))))
+        yaw = np.degrees(math.atan2(2*((w*z)+(x*y)), 1 - 2*((y*y) + (z*z))))
+        self.get_logger().info(f"roll: {roll}, pitch: {pitch}, yaw: {yaw}")
+```
 
 ## Asumsi Robot dan Logika Respon
 **Asumsi bentuk robot:** robot beroda dengan differential-drive. Sumbu x menghadap depan, y ke kiri, z ke atas.
@@ -43,6 +58,18 @@ ros2 run py_pubsub subscriber
 
 Ambang 45° dan 10° adalah nilai asumsi yang dipilih sendiri.
 
+**Penerapan**
+```py
+if abs(roll) > 45 or abs(pitch) > 45:
+    action = "STOP (robot terlalu miring)"
+elif yaw > 10:
+    action = "TURN LEFT (ccw)"
+elif yaw < -10:
+    action = "TURN RIGHT (cw)"
+else:
+    action = "MOVE FORWARD"
+self.get_logger().info(f"robot response: {action}")
+```
 
 ## Sumber
 - https://amu.hal.science/hal-03848730/document (formula 46)
@@ -53,7 +80,7 @@ Ambang 45° dan 10° adalah nilai asumsi yang dipilih sendiri.
 quaternion to euler angle converter (untuk verifikasi): https://www.andre-gaschler.com/rotationconverter/
 
 # PERTEMUAN 4
-Summary: arm control, forward kinematics, 
+Summary:
 ## SOAL 1
 
 ### 1. Kegunaan `<ros2_control>` tag pada file URDF
@@ -245,4 +272,3 @@ tambahin di readme:
 - meeting summaries
 - cara menjalankan program 
 - deskripsi arm_model 
-- Tugas tambahan penjelasan rumus konversi quaternion
