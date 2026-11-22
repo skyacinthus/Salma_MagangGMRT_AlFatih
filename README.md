@@ -3,8 +3,54 @@
 Summary: publisher, subscriber, 
 ## KONVERSI QUATERNION KE ROLL, PITCH, DAN YAW (RPY)
 
-Terdapat node `publisher` dan `subscriber` 
+Package `py_pubsub` berisi dua node:
+- **Publisher** mengirim nilai orientasi bertipe `geometry_msgs/msg/Quaternion` ke topik `topic` setiap 0,5 detik (nilai x, y, z, w di hard-code).
+- **Subscriber** menerima quaternion tersebut, mengonversinya menjadi roll, pitch, dan yaw dalam satuan **derajat**, lalu mencetaknya beserta respon robot.
 
+
+## Rumus Konversi
+Quaternion harus dinormalisasi terlebih dahulu agar panjangnya 1:
+
+$$ q = (w, x, y, z) $$
+$$ ‖q‖ = √(w² + x² + y² + z²) $$
+
+Kemudian:
+
+- roll (rotasi sumbu x) = $$ atan2( 2(wx + yz), 1 − 2(x² + y²) ) $$
+- pitch (rotasi sumbu y) = $$ asin( 2(wy − zx) )$$
+- yaw (rotasi sumbu z) = $$ atan2(2(wz + xy), 1$$
+
+## Penerapan 
+
+Jalankan kedua node dari workspace ROS2 pada dua terminal yang berbeda:
+
+```bash
+ros2 run py_pubsub publisher
+ros2 run py_pubsub subscriber
+```
+
+## Asumsi Robot dan Logika Respon
+**Asumsi bentuk robot:** robot beroda dengan differential-drive. Sumbu x menghadap depan, y ke kiri, z ke atas.
+
+**Logika respon:**
+
+| Kondisi | Respon |
+|---|---|
+| \|roll\| > 45° atau \|pitch\| > 45° | STOP (robot miring, berisiko terguling) |
+| yaw > 10° | Belok kiri (berlawanan arah jarum jam) |
+| yaw < −10° | Belok kanan (searah jarum jam) |
+| Selain itu | Maju (arah sudah lurus) |
+
+Ambang 45° dan 10° adalah nilai asumsi yang dipilih sendiri.
+
+
+## Sumber
+- https://amu.hal.science/hal-03848730/document (formula 46)
+- https://discuss.luxonis.com/d/5453-how-to-convert-quaternions-to-pitchrollyaw
+- https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
+- Dokumentasi ROS 2 Jazzy: `geometry_msgs/msg/Quaternion`
+
+quaternion to euler angle converter (untuk verifikasi): https://www.andre-gaschler.com/rotationconverter/
 
 # PERTEMUAN 4
 Summary: arm control, forward kinematics, 

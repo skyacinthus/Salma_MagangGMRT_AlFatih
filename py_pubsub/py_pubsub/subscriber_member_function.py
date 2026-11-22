@@ -29,6 +29,16 @@ class MinimalSubscriber(Node):
         yaw = np.degrees(math.atan2(2*((w*z)+(x*y)), 1 - 2*((y*y) + (z*z))))
         self.get_logger().info(f"roll: {roll}, pitch: {pitch}, yaw: {yaw}")
 
+        if abs(roll) > 45 or abs(pitch) > 45:
+            action = "STOP (robot terlalu miring)"
+        elif yaw > 10:
+            action = "TURN LEFT (ccw)"
+        elif yaw < -10:
+            action = "TURN RIGHT (cw)"
+        else:
+            action = "MOVE FORWARD"
+        self.get_logger().info(f"robot response: {action}")
+
 
 def main(args=None):
     rclpy.init(args=args)
