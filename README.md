@@ -21,7 +21,7 @@ Kemudian:
 
 - Roll (rotasi sumbu x):
 
-$$\text{roll} = \operatorname{atan2}\left(2(wx + yz),\ 1 - 2(x^2 + y^2)\right)$$
+$$\text{roll} = \text{atan2}\left(2(wx + yz),\ 1 - 2(x^2 + y^2)\right)$$
 
 - Pitch (rotasi sumbu y):
 
@@ -29,7 +29,7 @@ $$\text{pitch} = \arcsin\left(2(wy - zx)\right)$$
 
 - Yaw (rotasi sumbu z):
 
-$$\text{yaw} = \operatorname{atan2}\left(2(wz + xy),\ 1 - 2(y^2 + z^2)\right)$$
+$$\text{yaw} = \text{atan2}\left(2(wz + xy),\ 1 - 2(y^2 + z^2)\right)$$
 
 ## Penerapan 
 
