@@ -24,11 +24,11 @@ Jawab:
 
 ## SOAL 2: FORWARD KINEMATICS
 
-TUJUAN: Mencari posisi end effector (link_3). 
+TUJUAN: Mencari posisi end effector. 
 
 ### Layout Robot
 ---
-Chain pada arm.urdf adalah: 
+Chain pada `arm.urdf` adalah: 
 
 base_link -> `joint_1`-> femur -> `joint_2`-> tibia ->`joint_3 `-> gripper
 
@@ -140,9 +140,11 @@ ARM_POSITION = [0.3, 0.4, 0.0] #satuan radian
 ```
 
 Setelah dijalankan tampilan pada RViz berubah menjadi:
+
 ![alt text](assets/image.png)
 
-RViz menampilkan keterangan posisi end effector (gripper`= ujung tibia) sebagai berikut: 
+RViz menampilkan keterangan posisi end effector (gripper`= ujung tibia) sebagai berikut:
+
 ![alt text](assets/image-1.png)
 
 Perhitungan Menggunakan Python
@@ -153,18 +155,27 @@ Memasukkan input:
 - joint_1 ($\theta_1$): 17.1887
 - joint_2 ($\theta_2$): 22.9183
 
-Menghasilkan output 
+Menghasilkan output: 
 
 ![alt text](assets/image-2.png)
 
 Perbandingan
 ---
 
-| sumbu | RViz | Python |
+| Sumbu | RViz | Python |
 |---|---|---|
 | x | 0.263977 | 0.2639770241284272 |
 | y | 0.0816576 |0.08165749172792298 |
 | z | 0.566826 |0.5668254457599198 |
 
-### 
+Hasil perhitungan python sudah sesuai dengan koordinat pada RViz, selisih terjadi karena adanya perbedaan taraf ketelitian (ketika hasil python dibulatkan, nilainya akan sama). 
 
+
+
+
+# TODO 
+tambahin di readme: 
+- meeting summaries
+- cara menjalankan program 
+- deskripsi arm_model 
+- Tugas tambahan penjelasan rumus konversi quaternion
