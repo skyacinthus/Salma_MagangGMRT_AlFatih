@@ -11,14 +11,25 @@ Package `py_pubsub` berisi dua node:
 ## Rumus Konversi
 Quaternion harus dinormalisasi terlebih dahulu agar panjangnya 1:
 
-$$ q = (w, x, y, z) $$
-$$ ‖q‖ = √(w² + x² + y² + z²) $$
+$$q = (w, x, y, z)$$
+
+$$\lVert q \rVert = \sqrt{w^2 + x^2 + y^2 + z^2}$$
+
+$$w = \frac{w}{\lVert q \rVert}, \quad x = \frac{x}{\lVert q \rVert}, \quad y = \frac{y}{\lVert q \rVert}, \quad z = \frac{z}{\lVert q \rVert}$$
 
 Kemudian:
 
-- roll (rotasi sumbu x) = $$ atan2( 2(wx + yz), 1 − 2(x² + y²) ) $$
-- pitch (rotasi sumbu y) = $$ asin( 2(wy − zx) )$$
-- yaw (rotasi sumbu z) = $$ atan2(2(wz + xy), 1$$
+- Roll (rotasi sumbu x):
+
+$$\text{roll} = \operatorname{atan2}\left(2(wx + yz),\ 1 - 2(x^2 + y^2)\right)$$
+
+- Pitch (rotasi sumbu y):
+
+$$\text{pitch} = \arcsin\left(2(wy - zx)\right)$$
+
+- Yaw (rotasi sumbu z):
+
+$$\text{yaw} = \operatorname{atan2}\left(2(wz + xy),\ 1 - 2(y^2 + z^2)\right)$$
 
 ## Penerapan 
 
